@@ -5,6 +5,7 @@ config*
 *.lex.c
 *.tab.c
 *.tab.h
+*.zconf.c
 zconf.hash.c
 *.moc
 lkc_defs.h

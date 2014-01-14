@@ -3,3 +3,7 @@
 *.tab.c
 *.tab.h
 genksyms
+keywords.c
+lex.c
+parse.c
+parse.h
