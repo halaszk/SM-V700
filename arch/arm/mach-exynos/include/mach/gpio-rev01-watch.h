@@ -1,0 +1,95 @@
+#ifndef __MACH_GPIO_MIDAS_H
+#define __MACH_GPIO_MIDAS_H __FILE__
+
+#include <mach/gpio.h>
+
+extern void midas_config_gpio_table(void);
+extern void midas_config_sleep_gpio_table(void);
+
+#define GPIO_eMMC_EN		EXYNOS4_GPK0(2)
+
+#define GPIO_BOOT_MODE		EXYNOS4_GPX0(3)
+
+#if defined(CONFIG_MFD_MAX14577)
+#define GPIO_IF_PMIC_SDA	EXYNOS4_GPA0(6)
+#define GPIO_IF_PMIC_SCL	EXYNOS4_GPA0(7)
+#define GPIO_IF_PMIC_IRQ	EXYNOS4_GPX1(5)
+#else
+#define GPIO_CHG_INTB		EXYNOS4_GPX1(5)	/* hw01 */
+#endif
+
+#define GPIO_SHUB_SPI_SCK	EXYNOS4_GPB(4)
+#define GPIO_SHUB_SPI_SSN	EXYNOS4_GPB(5)
+#define GPIO_SHUB_SPI_MISO	EXYNOS4_GPB(6)
+#define GPIO_SHUB_SPI_MOSI	EXYNOS4_GPB(7)
+
+#define GPIO_VTCAM_MCLK		EXYNOS4212_GPM2(2)
+
+#define GPIO_CAM_VT_nRST	EXYNOS4212_GPJ1(0)
+
+#if defined(CONFIG_FUELGAUGE_MAX17048)
+#define GPIO_FUEL_SDA		EXYNOS4_GPD1(2)
+#define GPIO_FUEL_SCL		EXYNOS4_GPD1(3)
+#define GPIO_FUEL_nALRT		EXYNOS4_GPX1(2)
+#else
+#define GPIO_FUEL_SDA		EXYNOS4_GPA0(6)
+#define GPIO_FUEL_SCL		EXYNOS4_GPA0(7)
+#endif
+
+#define GPIO_VT_CAM_SCL_18V	EXYNOS4212_GPM4(2)
+#define GPIO_VT_CAM_SDA_18V	EXYNOS4212_GPM4(3)
+
+/* Sensors & NFC*/
+#define GPIO_AP_MCU_INT		EXYNOS4_GPX0(0)
+#define GPIO_MCU_AP_INT		EXYNOS4_GPX0(2)
+#define GPIO_MCU_AP_INT_2	EXYNOS4_GPX0(4)
+#define GPIO_MCU_NRST		EXYNOS4_GPX0(5)
+/* Sensors & NFC*/
+
+#define GPIO_TF_EN		EXYNOS4_GPY2(0)	/* hw03 and below */
+
+#define GPIO_PMIC_IRQ		EXYNOS4_GPX0(7)
+
+#define GPIO_TSP_INT		EXYNOS4212_GPM2(3)
+#define GPIO_TSP_SDA_18V	EXYNOS4_GPA1(2)
+#define GPIO_TSP_SCL_18V	EXYNOS4_GPA1(3)
+
+#define GPIO_BT_nRST		EXYNOS4_GPX3(0)
+#define GPIO_BT_EN		EXYNOS4_GPL0(6)
+#define GPIO_BT_WAKE		EXYNOS4_GPX3(1)
+#define GPIO_BT_HOST_WAKE	EXYNOS4_GPX2(6)
+#define IRQ_BT_HOST_WAKE	IRQ_EINT(22)
+
+#define GPIO_BT_RXD		EXYNOS4_GPA0(0)
+#define GPIO_BT_RXD_AF		2
+
+#define GPIO_BT_TXD		EXYNOS4_GPA0(1)
+#define GPIO_BT_TXD_AF		2
+
+#define GPIO_BT_CTS		EXYNOS4_GPA0(2)
+#define GPIO_BT_CTS_AF		2
+
+#define GPIO_BT_RTS		EXYNOS4_GPA0(3)
+#define GPIO_BT_RTS_AF		2
+
+#define GPIO_POGO_VBATT_EN	EXYNOS4_GPL0(3) /* hw01 ~ hw03 */
+#define GPIO_POGO_VBUS_EN	EXYNOS4_GPL0(4) /* hw01 ~ hw03 */
+
+#define GPIO_LCD_VSYNC		EXYNOS4_GPX0(6)
+
+#define GPIO_MLCD_RST		EXYNOS4_GPF2(1)
+#define GPIO_OLED_DET		EXYNOS4_GPX1(7) /* hw01 and below */
+/* hw02 and above : GPIO_OLED_DET EXYNOS4_GPX1(7) */
+
+#define GPIO_PMIC_DVS1		EXYNOS4212_GPM3(0)
+#define GPIO_PMIC_DVS2		EXYNOS4212_GPM3(1)
+#define GPIO_PMIC_DVS3		EXYNOS4212_GPM3(2)
+
+#define GPIO_VOL_UP		EXYNOS4_GPX2(2)	/* hw02 and below */
+#define GPIO_VOL_DOWN		EXYNOS4_GPX3(3)	/* hw02 and below */
+
+#define GPIO_nPOWER		EXYNOS4_GPX2(7)
+
+#define GPIO_YMU_LDO_EN		EXYNOS4_GPX3(6)
+
+#endif /* __MACH_GPIO_MIDAS_H */
