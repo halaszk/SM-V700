@@ -18,20 +18,12 @@
 
 #include "mali_osk.h"
 
-#ifndef CONFIG_MACH_WATCH
 #ifdef CONFIG_CPU_EXYNOS4210
 #define MALI_DVFS_STEPS 2
 #else
 #define MALI_DVFS_STEPS 5
 #endif
-#endif
 
-#ifdef CONFIG_MACH_WATCH
-#define MALI_GPU_BOTTOM_LOCK 0
-#define MALI_VOLTAGE_LOCK 0
-#define CPUFREQ_LOCK_DURING_440 0
-
-#else
 /* @Enable or Disable Mali GPU Bottom Lock feature */
 #define MALI_GPU_BOTTOM_LOCK 1
 
@@ -39,7 +31,6 @@
 
 /* @Enable or Disable the CPU frequency lock when the GPU clock is 440 Mhz */
 #define CPUFREQ_LOCK_DURING_440 1
-#endif
 
 #ifdef __cplusplus
 extern "C" {

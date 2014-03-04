@@ -31,11 +31,9 @@
 #define MALI_DVFS_WATING 10 // msec
 #define PD_G3D_LOCK_FLAG 2
 
-#ifndef CONFIG_MACH_WATCH
 #ifdef CONFIG_CPU_FREQ
 #include <mach/asv.h>
 #define EXYNOS4_ASV_ENABLED
-#endif
 #endif
 
 #include <plat/cpu.h>

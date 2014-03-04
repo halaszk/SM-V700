@@ -60,12 +60,7 @@ typedef struct mali_runtime_resumeTag{
 	int vol;
 }mali_runtime_resume_table;
 
-#ifdef CONFIG_MACH_WATCH
-mali_runtime_resume_table mali_runtime_resume = {80, 900000};
-#else
 mali_runtime_resume_table mali_runtime_resume = {266, 900000};
-#endif
-
 
 /* lock/unlock CPU freq by Mali */
 extern int cpufreq_lock_by_mali(unsigned int freq);
@@ -91,21 +86,12 @@ static struct clk  *mali_clock = 0;
 
 static unsigned int GPU_MHZ	= 1000000;
 
-#ifdef CONFIG_MACH_WATCH
-int mali_gpu_clk = 80;
-#else
 int mali_gpu_clk = 266;
-#endif
 int mali_gpu_vol = 900000;
 
 #if MALI_DVFS_ENABLED
-#ifdef CONFIG_MACH_WATCH
-#define MALI_DVFS_DEFAULT_STEP 0
-#else
 #define MALI_DVFS_DEFAULT_STEP 1
 #endif
-#endif
-
 #if MALI_VOLTAGE_LOCK
 int mali_lock_vol = 0;
 static _mali_osk_atomic_t voltage_lock_status;
@@ -535,9 +521,9 @@ static _mali_osk_errcode_t enable_mali_clocks(void)
 	err = clk_enable(mali_clock);
 	MALI_DEBUG_PRINT(3,("enable_mali_clocks mali_clock %p error %d \n", mali_clock, err));
 
+	mali_runtime_resume.vol = mali_dvfs_get_vol(MALI_DVFS_DEFAULT_STEP);
 #if MALI_PMM_RUNTIME_JOB_CONTROL_ON
 #if MALI_DVFS_ENABLED
-	mali_runtime_resume.vol = mali_dvfs_get_vol(MALI_DVFS_DEFAULT_STEP);
 	// set clock rate
 	if (get_mali_dvfs_control_status() != 0 || mali_gpu_clk >= mali_runtime_resume.clk)
 		mali_clk_set_rate(mali_gpu_clk, GPU_MHZ);

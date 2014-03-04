@@ -311,7 +311,6 @@ void _ump_osk_msync( ump_dd_mem * mem, void * virt, u32 offset, u32 size, ump_uk
 	int i;
 	const void *start_v, *end_v;
 
-
 	/* Flush L1 using virtual address, the entire range in one go.
 	 * Only flush if user space process has a valid write mapping on given address. */
 	if( (mem) && (virt!=NULL) && (access_ok(VERIFY_WRITE, virt, size)) )

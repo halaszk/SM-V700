@@ -41,10 +41,6 @@ extern struct ion_device *ion_exynos;
 struct ion_client *ion_client_ump = NULL;
 #endif
 
-#if UMP_LICENSE_IS_GPL && defined(CONFIG_MALI_UMP_R3P1_DEBUG_MEM_USAGE_FOR_OOM)
-#include <linux/oom.h>
-#endif
-
 /* Module parameter to control log level */
 int ump_debug_level = 2;
 module_param(ump_debug_level, int, S_IRUSR | S_IWUSR | S_IWGRP | S_IRGRP | S_IROTH); /* rw-rw-r-- */
@@ -170,20 +166,6 @@ static const struct file_operations ump_memory_usage_fops = {
         .read = ump_memory_used_read,
 };
 
-#if UMP_LICENSE_IS_GPL && defined(CONFIG_MALI_UMP_R3P1_DEBUG_MEM_USAGE_FOR_OOM)
-static int ump_oom_handler(struct notifier_block *nb, unsigned long val,
-                void *data)
-{
-       u32 mem = _ump_ukk_report_memory_usage();
-       printk(KERN_INFO "ump memory usage : %u KB\n", mem / SZ_1K);
-       return 0;
-}
-
-static struct notifier_block ump_oom_notifier = {
-       .notifier_call = ump_oom_handler,
-};
-#endif
-
 /*
  * Initialize the UMP device driver.
  */
@@ -242,10 +224,6 @@ int ump_kernel_device_initialize(void)
 				mdev = device_create(ump_device.ump_class, NULL, dev, NULL, ump_dev_name);
 				if (!IS_ERR(mdev))
 				{
-#if defined(CONFIG_MALI_UMP_R3P1_DEBUG_MEM_USAGE_FOR_OOM)
-					err = register_oom_notifier(&ump_oom_notifier);
-					if (0 == err) return 0;
-#endif
 					return 0;
 				}
 
@@ -273,9 +251,6 @@ void ump_kernel_device_terminate(void)
 	dev_t dev = MKDEV(ump_major, 0);
 
 #if UMP_LICENSE_IS_GPL
-#if defined(CONFIG_MALI_UMP_R3P1_DEBUG_MEM_USAGE_FOR_OOM)
-	unregister_oom_notifier(&ump_oom_notifier);
-#endif
 	device_destroy(ump_device.ump_class, dev);
 	class_destroy(ump_device.ump_class);
 #endif

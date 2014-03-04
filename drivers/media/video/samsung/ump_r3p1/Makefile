@@ -86,7 +86,7 @@ EXTRA_CFLAGS += $(INCLUDES) \
 		
 		
 # Get subversion revision number, fall back to 0000 if no svn info is available
-SVN_REV:=0000
+SVN_REV:=1
 		
 EXTRA_CFLAGS += -DSVN_REV=$(SVN_REV)
 EXTRA_CFLAGS += -DSVN_REV_STRING=\"$(SVN_REV)\"

@@ -32,9 +32,6 @@
 #if MALI_INTERNAL_TIMELINE_PROFILING_ENABLED
 #include "mali_profiling_internal.h"
 #endif
-#if MALI_LICENSE_IS_GPL && defined(CONFIG_MALI_UMP_R3P1_DEBUG_MEM_USAGE_FOR_OOM)
-#include <linux/oom.h>
-#endif
 
 /* Streamline support for the Mali driver */
 #if defined(CONFIG_TRACEPOINTS) && MALI_TIMELINE_PROFILING_ENABLED
@@ -158,11 +155,6 @@ MODULE_PARM_DESC(step3_vol, "Mali Current step3_vol");
 #endif
 #endif
 
-extern int gpu_power_state;
-module_param(gpu_power_state, int, S_IRUSR | S_IRGRP | S_IROTH); /* r--r--r-- */
-MODULE_PARM_DESC(gpu_power_state, "Mali Power State");
-#endif
-
 extern int mali_gpu_clk;
 module_param(mali_gpu_clk, int, S_IRUSR | S_IRGRP | S_IROTH); /* r--r--r-- */
 MODULE_PARM_DESC(mali_gpu_clk, "Mali Current Clock");
@@ -170,6 +162,11 @@ MODULE_PARM_DESC(mali_gpu_clk, "Mali Current Clock");
 extern int mali_gpu_vol;
 module_param(mali_gpu_vol, int, S_IRUSR | S_IRGRP | S_IROTH); /* r--r--r-- */
 MODULE_PARM_DESC(mali_gpu_vol, "Mali Current Voltage");
+
+extern int gpu_power_state;
+module_param(gpu_power_state, int, S_IRUSR | S_IRGRP | S_IROTH); /* r--r--r-- */
+MODULE_PARM_DESC(gpu_power_state, "Mali Power State");
+#endif
 
 
 static char mali_dev_name[] = "mali"; /* should be const, but the functions we call requires non-cost */
@@ -202,19 +199,6 @@ struct file_operations mali_fops =
 	.mmap = mali_mmap
 };
 
-#if MALI_LICENSE_IS_GPL && defined(CONFIG_MALI_UMP_R3P1_DEBUG_MEM_USAGE_FOR_OOM)
-static int mali_oom_handler(struct notifier_block *nb, unsigned long val,
-                void *data)
-{
-	u32 mem = _mali_ukk_report_memory_usage();
-	printk(KERN_INFO "mali memory usage : %u KB\n", mem / SZ_1K);
-	return 0;
-}
-
-static struct notifier_block mali_oom_notifier = {
-	.notifier_call = mali_oom_handler,
-};
-#endif
 
 int mali_driver_init(void)
 {
@@ -250,21 +234,11 @@ int mali_driver_init(void)
 	ret = initialize_sysfs();
 	if (0 != ret) goto initialize_sysfs_failed;
 
-#if MALI_LICENSE_IS_GPL && defined(CONFIG_MALI_UMP_R3P1_DEBUG_MEM_USAGE_FOR_OOM)
-	ret = register_oom_notifier(&mali_oom_notifier);
-	if (0 != ret) goto initialize_oom_nofifier_failed;
-#endif
-
 	MALI_PRINT(("Mali device driver loaded\n"));
 
 	return 0; /* Success */
 
 	/* Error handling */
-#if MALI_LICENSE_IS_GPL && defined(CONFIG_MALI_UMP_R3P1_DEBUG_MEM_USAGE_FOR_OOM)
-initialize_oom_nofifier_failed:
-	/* No need to terminate sysfs, this will be done automatically
-	 * along with device termination */
-#endif
 initialize_sysfs_failed:
 #if MALI_INTERNAL_TIMELINE_PROFILING_ENABLED
         _mali_internal_profiling_term();
@@ -286,9 +260,6 @@ void mali_driver_exit(void)
 	MALI_DEBUG_PRINT(2, ("\n"));
 	MALI_DEBUG_PRINT(2, ("Unloading Mali v%d device driver.\n",_MALI_API_VERSION));
 
-#if MALI_LICENSE_IS_GPL && defined(CONFIG_MALI_UMP_R3P1_DEBUG_MEM_USAGE_FOR_OOM)
-	unregister_oom_notifier(&mali_oom_notifier);
-#endif
 	/* No need to terminate sysfs, this will be done automatically along with device termination */
 
 #if MALI_INTERNAL_TIMELINE_PROFILING_ENABLED
