@@ -27,8 +27,6 @@
 /* @Enable or Disable Mali GPU Bottom Lock feature */
 #define MALI_GPU_BOTTOM_LOCK 1
 
-#define MALI_VOLTAGE_LOCK 1
-
 /* @Enable or Disable the CPU frequency lock when the GPU clock is 440 Mhz */
 #define CPUFREQ_LOCK_DURING_440 1
 
@@ -139,13 +137,6 @@ int mali_dvfs_bottom_lock_pop(void);
 #endif
 
 int mali_dvfs_get_vol(int step);
-
-#if MALI_VOLTAGE_LOCK
-int mali_voltage_lock_push(int lock_vol);
-int mali_voltage_lock_pop(void);
-int mali_voltage_lock_init(void);
-int mali_vol_get_from_table(int vol);
-#endif
 
 #ifdef __cplusplus
 }
