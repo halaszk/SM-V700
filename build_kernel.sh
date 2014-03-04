@@ -40,7 +40,7 @@ fi;
 
 cd ${KERNELDIR}/
 
-GETVER=`grep 'halaszk-.*-V' .config | sed 's/.*".//g' | sed 's/-S.*//g'`
+GETVER=`grep 'halaszk-.*-V' .config | sed 's/.*".//g' | sed 's/-P.*//g'`
 nice -n 10 make -j$NAMBEROFCPUS || exit 1
 
 # remove previous zImage files
